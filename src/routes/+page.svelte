@@ -37,7 +37,7 @@
       </label>
     </form>
 
-    <div class="min-w-full min-h-8 bg-white rounded-sm hover:cursor-not-allowed">
+    <div class="min-w-full min-h-8 px-4 py-2 rounded-sm bg-white rounded-sm hover:cursor-not-allowed">
       {#if result}{result}{/if}
     </div>
   </div>
