@@ -1,44 +1,64 @@
 <script lang="ts">
+  import SvelteMarkdown from 'svelte-markdown'
   import "../app.css";
 
-  let promptInput: any;
+  let locationInput: any;
+  let coursesInput: any;
   let result = '';
+  let loading = false;
 
   async function onSubmit(event: any) {
     event.preventDefault();
+    loading = true;
 
     const response = await fetch('/api/prompt', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt: promptInput }),
+      body: JSON.stringify({ location: locationInput, courses: coursesInput }),
     })
 
     const data = await response.json();
+    loading = false;
+
     result = data.result
   }
 </script>
 
 <main class="max-w-5xl mx-auto my-24 p-12 bg-gray-100 rounded-sm">
-  <h1 class="text-5xl mb-16">My app!</h1>
+  <h1 class="text-5xl mb-8">Generate a chaos menu:</h1>
 
   <div class="form">
-    <form method="POST" on:submit={onSubmit}>
-      <label class="label">
+    <form method="POST" class="mb-8" on:submit={onSubmit}>
+      <div class="label">
         <input
-          class="input min-w-full px-4 py-2 rounded-sm mb-8"
+          class="block min-w-[500px] p-4 rounded"
           type="search"
           name="prompt"
-          bind:value={promptInput}
-          placeholder="Ask me a question"
+          bind:value={locationInput}
+          placeholder="Where is your restaurant located?"
           required
         />
-      </label>
+        <input
+          class="block mt-2 p-4 rounded"
+          type="search"
+          name="prompt"
+          bind:value={coursesInput}
+          placeholder="How many courses?"
+          required
+        />
+        <button class="mt-2 p-4 bg-green-400 rounded-sm">Go!</button>
+      </div>
     </form>
 
-    <div class="min-w-full min-h-8 px-4 py-2 rounded-sm bg-white rounded-sm hover:cursor-not-allowed">
-      {#if result}{result}{/if}
+    <div class="prose min-w-full min-h-8 p-8 rounded-sm bg-white">
+
+      {#if loading == true}
+        <p>Generating your chaos menu...</p>
+      {:else if result}
+        <SvelteMarkdown source={result} />
+      {/if}
     </div>
   </div>
 </main>
