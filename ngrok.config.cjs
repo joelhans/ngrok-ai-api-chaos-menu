@@ -6,7 +6,6 @@ var host = "localhost";
 var port = "5173";
 var run = true;
 process.argv.forEach((item, index) => {
-  console.log(item)
   if (item.includes("postinstall")) run = false;
   if (item == "--host") host = process.argv[index + 1];
   if (item == "--port") port = process.argv[index + 1];
