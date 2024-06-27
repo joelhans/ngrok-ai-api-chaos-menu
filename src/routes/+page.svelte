@@ -4,6 +4,7 @@
 
   let locationInput: any;
   let coursesInput: any;
+  let personalityInput: any;
   let result = '';
   let loading = false;
 
@@ -16,13 +17,20 @@
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ location: locationInput, courses: coursesInput }),
+      body: JSON.stringify({ location: locationInput, courses: coursesInput, personality: personalityInput }),
     })
 
     const data = await response.json();
-    loading = false;
 
-    result = data.result
+    if (data.status == 400) {
+      loading = false;
+      result = data.message
+    } else {
+      loading = false;
+      result = data.result
+    }
+
+    
   }
 </script>
 
@@ -41,11 +49,19 @@
           required
         />
         <input
-          class="block mt-2 p-4 rounded"
+          class="block min-w-[500px] mt-2 p-4 rounded"
           type="search"
           name="prompt"
           bind:value={coursesInput}
           placeholder="How many courses?"
+          required
+        />
+        <input
+          class="block min-w-[500px] mt-2 p-4 rounded"
+          type="search"
+          name="prompt"
+          bind:value={personalityInput}
+          placeholder="How would you describe your cuisine?"
           required
         />
         <button class="mt-2 p-4 bg-green-400 rounded-sm">Go!</button>
